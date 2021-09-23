@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="documentNumber" />
+    </Key>
+    <Property Name="documentNumber" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="typeDocument" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="address" Type="nvarchar" MaxLength="70" />
+    <Property Name="phone" Type="nvarchar" MaxLength="15" />
+    <Property Name="email" Type="nvarchar" MaxLength="70" />
+    <Property Name="city" Type="nvarchar" MaxLength="40" />
+    <Property Name="photo" Type="image" />
+    <Property Name="fechaNacimiento" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Imc">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="height" Type="float" Nullable="false" />
+    <Property Name="weight" Type="float" Nullable="false" />
+    <Property Name="imcResult" Type="float" Nullable="false" />
+    <Property Name="diagnosis" Type="nvarchar" MaxLength="100" />
+    <Property Name="cliente_document" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Imc_Client">
+    <End Role="Client" Type="Self.Client" Multiplicity="1" />
+    <End Role="Imc" Type="Self.Imc" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="documentNumber" />
+      </Principal>
+      <Dependent Role="Imc">
+        <PropertyRef Name="cliente_document" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Imc" EntityType="Self.Imc" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Imc_Client" Association="Self.FK_Imc_Client">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="Imc" EntitySet="Imc" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
